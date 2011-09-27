@@ -1,9 +1,7 @@
 package cscie160.hw1;
 
 /**
- * Elevator simulation with passenger loading/unloading and building floor limits.
- * 
- * @author Reagan Williams
+ * @author Reagan Williams <rwilliams@fas.harvard.edu>
  * @version 1.0
  * @since 2011-09-14
  */
@@ -17,6 +15,7 @@ public class Elevator
      * destinations and printing an Elevator status along the way.
      *
      * @param args No parameters are used here.
+     * @return void
      *
      */
     public static void main(String[] args)
@@ -36,7 +35,7 @@ public class Elevator
         {
             e.move();
 
-            if (e.isDestinationFloor())
+            if (isDestinationFloor())
             {
                 e.stop();
             }

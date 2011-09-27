@@ -13,6 +13,6 @@ And your output will match the requirements in the homework definition.  If you 
 
 One major thing to note is that I'm unhappy with is my concession on handling the arrays of floors.  I ended up creating the floor arrays (1 for passenger counts per floor, 1 for if a floor is a destination or not) with 1 extra "floor" because I think that improves the readability of the code, although it creates an unused array member. For example, I did not want currentFloor[0] to actually be a "real life" floor 1.
 
-All of the JavaDoc comments contained in the html/ folder.
+All of the JavaDoc comments contained in the doc/ folder.
 
 
