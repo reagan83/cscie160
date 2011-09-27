@@ -222,7 +222,6 @@ public class Elevator
         if (getPassengerCount() >= PASSENGER_CAPACITY)
         {
             throw new CapacityReachedException("Elevator capacity of " + PASSENGER_CAPACITY + " has been reached.");
-            return false;
         }
         
         destinationFloor[floor] = true;
