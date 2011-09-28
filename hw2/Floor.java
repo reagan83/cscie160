@@ -48,7 +48,7 @@ public class Floor
      * This method unloads the passengers from the Elevator and loads new
      * waiting passengers.
      *
-     * @param Elevator object
+     * @param e Elevator object
      */
 	public void unloadPassengers(Elevator e)
 	{
