@@ -1,17 +1,17 @@
 Reagan Williams
-Homework #1
+Homework #2
 rwilliams@fas.harvard.edu
-9/14/2011
+9/27/2011
 
-This solution is a basic Elevator simulation program written in Java.  This program is created using a public Elevator class that can be extended by other developers in other super classes (a Building class perhaps?), or used in statistical gathering scenarios which I hope to implement in future exercises.
+This solution is an improvement to hw1 which provides an basic Elevator simulation, with Floor objects written in Java.  This program is created using a public Elevator class that can be extended by other developers in other super classes (a Building class perhaps?), or used in statistical gathering scenarios which I hope to implement in future exercises.
 
 To execute this solution, use:
 
-java -classpath HW1.jar cscie160.hw1.Elevator
+java -classpath HW2.jar cscie160.hw2.Elevator
 
-And your output will match the requirements in the homework definition.  If you want to check that I actually created the Elevator class and didn't use a series of println()'s to match the homework output, then open your favorite text editor and point it to Elevator.java.
+The output you get will be a sample of normal (hw1) behavior, which pre-boards passengers and deboards them at the correct floor while 'sweeping' every floor in the building.  This version also allows for passengers to register requests to have an elevator stop at floors to pick up passengers.  In addition, it has error handling for capacity checking to ensure the elevator doesn't exceed it's capacity.  In the event of a full capacity exception, the remaining passengers will wait until the elevator drops off other passengers to free up space and return to their floor to attempt to re-board.  This simulation exercises this behavior by loading more than 10 passengers in the elevator, then registering board requests for more passengers to show the basic queuing that the Floor class handles.
 
-One major thing to note is that I'm unhappy with is my concession on handling the arrays of floors.  I ended up creating the floor arrays (1 for passenger counts per floor, 1 for if a floor is a destination or not) with 1 extra "floor" because I think that improves the readability of the code, although it creates an unused array member. For example, I did not want currentFloor[0] to actually be a "real life" floor 1.
+As in hw1, I'm not excited about the way I implemented the Floor.unloadPassengers() method.  It doesn't seem right to have the Elevator stop() method call Floor.unloadPassengers(), then to have Floor recall Elevator to clear the passengers.  It is possible I misunderstood the requirements, or was not creative enough to come up with a more elegant solution.
 
 All of the JavaDoc comments contained in the doc/ folder.
 
