@@ -10,7 +10,7 @@ package cscie160.hw2;
 class CapacityReachedException extends Exception
 {
     /**
-     * Constructor class
+     * Capacity reached constructor
      *
      * @param exception message string
      */
