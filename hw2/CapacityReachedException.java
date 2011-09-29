@@ -7,12 +7,12 @@ package cscie160.hw2;
  * @version 1.2 (hw2)
  * @since 2011-09-27
  */
-class CapacityReachedException extends Exception
+public class CapacityReachedException extends Exception
 {
     /**
      * Capacity reached constructor
      *
-     * @param exception message string
+     * @param msg exception message string
      */
     public CapacityReachedException(String msg)
     {
