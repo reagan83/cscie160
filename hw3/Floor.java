@@ -4,7 +4,7 @@ package cscie160.hw3;
  * Floor class for the Elevator simulator.
  *
  * @author Reagan Williams
- * @version 1.2 (hw2)
+ * @version 1.3 (hw3)
  * @since 2011-09-27
  *
  */

@@ -4,7 +4,7 @@ package cscie160.hw3;
  * Elevator simulation with passenger loading/unloading and building floor limits.
  * 
  * @author Reagan Williams
- * @version 1.2 (hw2)
+ * @version 1.3 (hw3)
  * @since 2011-09-27
  */
 public class Elevator
