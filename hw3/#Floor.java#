@@ -79,7 +79,7 @@ public class Floor
         {
             bp = passengersQueuedDown;
         }
-            
+
         // load passengers waiting to board
         if (bp.size() > 0)
         {
