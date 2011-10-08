@@ -30,7 +30,7 @@ public class Elevator
         Elevator e = new Elevator();
 
         Random r = new Random();
-        int passengerCount = r.nextInt(5);
+        int passengerCount = r.nextInt(50);
 
         for (int i = 0; i < passengerCount; i++)
         {
@@ -43,8 +43,6 @@ public class Elevator
             e.registerRequest(p);
         }
 
-//        e.registerRequest(new Passenger(3, 4));
-
         for (int i = 0; i < 25; i++)
         {
             if (e.isDestinationFloor())
@@ -52,7 +50,7 @@ public class Elevator
                 e.stop();
             }
 
-//            e.clearScreen();
+            e.clearScreen();
             e.printElevatorStatus();
             e.printFloorStatus();
 
