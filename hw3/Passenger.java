@@ -21,6 +21,14 @@ public class Passenger
         destinationFloor = dFloor;
     }
 
+    public int getDirection()
+    {
+        if (getCurrentFloor() > getDestinationFloor())
+            return -1;
+        
+        return 1;
+    }
+
     public int getCurrentFloor()
     {
         return currentFloor;

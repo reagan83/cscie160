@@ -79,7 +79,7 @@ public class Floor
         {
             bp = passengersQueuedDown;
         }
-            
+
         // load passengers waiting to board
         if (bp.size() > 0)
         {
@@ -97,8 +97,6 @@ public class Floor
                     boardResult = false;
                 }
             }
-
-            System.out.println("[Floor " + e.getCurrentFloor() + "] Finished boarding. " + bp.size() + " left waiting to board.");
         }
 
         if (getPassengersQueuedUpCount() > 0 || getPassengersQueuedDownCount() > 0)
@@ -120,15 +118,15 @@ public class Floor
     {
         if (p.getDestinationFloor() == p.getCurrentFloor())
         {
-            passengersResident.add(p);
+            passengersResident.push(p);
         }
         else if (p.getCurrentFloor() < p.getDestinationFloor())
         {
-            passengersQueuedUp.add(p);
+            passengersQueuedUp.push(p);
         }
         else
         {
-            passengersQueuedDown.add(p);
+            passengersQueuedDown.push(p);
         }
     }
 

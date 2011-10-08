@@ -30,7 +30,7 @@ public class Elevator
         Elevator e = new Elevator();
 
         Random r = new Random();
-        int passengerCount = r.nextInt(50);
+        int passengerCount = r.nextInt(5);
 
         for (int i = 0; i < passengerCount; i++)
         {
@@ -43,6 +43,8 @@ public class Elevator
             e.registerRequest(p);
         }
 
+//        e.registerRequest(new Passenger(3, 4));
+
         for (int i = 0; i < 25; i++)
         {
             if (e.isDestinationFloor())
@@ -50,7 +52,7 @@ public class Elevator
                 e.stop();
             }
 
-            e.clearScreen();
+//            e.clearScreen();
             e.printElevatorStatus();
             e.printFloorStatus();
 
@@ -84,11 +86,12 @@ public class Elevator
         }
 
         destinationFloor = new boolean[BUILDING_FLOORS + 1];
+        destinationFloorAlternate = new boolean[BUILDING_FLOORS + 1];
         for (int i = 0; i < destinationFloor.length; i++)
         {
             destinationFloor[i] = false;
+            destinationFloorAlternate[i] = false;
         }
-
     }
 
     public void clearScreen()
@@ -146,7 +149,16 @@ public class Elevator
         if (p.getCurrentFloor() != p.getDestinationFloor())
         {
             // set elevator's destination (stop) to passenger's current floor for pickup
-            destinationFloor[p.getCurrentFloor()] = true;
+            if (p.getDirection() == this.getCurrentDirection())
+            {
+                System.out.println("p.getDirection: " + p.getDirection() + "=" + this.getCurrentDirection());
+                destinationFloor[p.getCurrentFloor()] = true;
+            }
+            else
+            {
+                System.out.println("p.Alternate: " + p.getDirection() + "!=" + this.getCurrentDirection());
+                destinationFloorAlternate[p.getCurrentFloor()] = true;
+            }
         }
     }
 
@@ -177,7 +189,7 @@ public class Elevator
         for (Iterator<Passenger> it = passenger.iterator(); it.hasNext();)
         {
             Passenger p = it.next();
-            if (p.getDestinationFloor() == getCurrentFloor())
+            if (p.getDestinationFloor() == this.getCurrentFloor())
             {
                 it.remove();
                 return p;
@@ -200,9 +212,12 @@ public class Elevator
     {
         elevatorStatus = "Moving";
 
-        if (currentFloor <= 1 || currentFloor >= BUILDING_FLOORS)
+        if ( (currentFloor <= 1 && getCurrentDirection() < 0) || (currentFloor >= BUILDING_FLOORS && getCurrentDirection() > 0))
         {
             doSwitchDirection();
+
+            if (destinationFloor[currentFloor] == true)
+                stop();
         }
 
         // I thought this declaration was clever when I thought of it.
@@ -246,6 +261,12 @@ public class Elevator
      */
     public void doSwitchDirection()
     {
+        boolean[] toggleBuffer;
+
+        toggleBuffer = destinationFloorAlternate;
+        destinationFloorAlternate = destinationFloor;
+        destinationFloor = toggleBuffer;
+
         if (currentFloor >= BUILDING_FLOORS)
         {
             currentDirection = DIRECTION_DOWN;
@@ -321,6 +342,7 @@ public class Elevator
 
     private int currentFloor;
     private int currentDirection;
+
     private String elevatorStatus;
 
     /**
@@ -340,6 +362,7 @@ public class Elevator
      * Thus, the member [0] will go unused.
      */
     private boolean[] destinationFloor;
+    private boolean[] destinationFloorAlternate;
 
     // constant values
     private static final int BUILDING_FLOORS = 7;
