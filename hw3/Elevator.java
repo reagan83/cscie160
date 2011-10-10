@@ -10,16 +10,16 @@ import java.util.Scanner;
  * 
  * @author Reagan Williams
  * @version 1.3 (hw3)
- * @since 2011-09-27
+ * @since 2011-10-03
  */
 public class Elevator
 {
     /**
      * main
      * 
-     * This code creates an Elevator object, boards passengers to the Elevator hw2 spec, then has the
+     * This code creates an Elevator object, boards passengers to the Elevator hw3 spec, then has the
      * Elevator object sweep (move) to all floors in the building letting off passengers at their
-     * destinations and printing an Elevator status along the way.  It also supports the Floor class
+     * destinations and printing an Elevator status along the way.  It also supports the Floor and Passenger classes
      * which allows for registering passenger boarding requests.
      *
      * @param args No parameters are used here.
@@ -29,6 +29,8 @@ public class Elevator
     {
         Elevator e = new Elevator();
 
+
+        // Setup random passengers
         Random r = new Random();
         int passengerCount = r.nextInt(50);
 
@@ -43,6 +45,7 @@ public class Elevator
             e.registerRequest(p);
         }
 
+        // Perform elevator simulation
         for (int i = 0; i < 25; i++)
         {
             if (e.isDestinationFloor())
@@ -84,7 +87,10 @@ public class Elevator
         }
 
         destinationFloor = new boolean[BUILDING_FLOORS + 1];
+
+        // create Alternate "destination" array to store destinations for the opposite direction of the elevator
         destinationFloorAlternate = new boolean[BUILDING_FLOORS + 1];
+
         for (int i = 0; i < destinationFloor.length; i++)
         {
             destinationFloor[i] = false;
@@ -92,14 +98,26 @@ public class Elevator
         }
     }
 
-    public void clearScreen()
+    /**
+     * This method prints empty lines to the output to "clear" the screen.
+     *
+     */
+    public static void clearScreen()
     {
+
         for (int i = 0; i < 1000; i++)
         {
             System.out.println();
         }
     }
 
+    /**
+     * This method prints the status of the Elevator.
+     *
+     * This envokes the toString() method of the Elevator class and adds a little style.  In addition, it also
+     * prints the status of each of the Passenger slots on the elevator, with the passenger's destination floor.
+     *
+     */
     public void printElevatorStatus()
     {
         System.out.println("====================");
@@ -118,7 +136,14 @@ public class Elevator
         System.out.println("====================");
     }
 
-
+    /**
+     * This method prints the status of each floor.
+     *
+     * This envokes the toString() method of the Floor class and adds a little style.  In addition, it also
+     * will mark the floor # with a * if the elevator is expected to stop in that direction.  Note: there are two
+     * directions (up/down), and two separate arrays to tell the elevator when to stop.
+     *
+     */
     public void printFloorStatus()
     {
         System.out.println("--------------------");
@@ -131,13 +156,12 @@ public class Elevator
     }
 
     /**
-     * Registers a request with the floor to add a passenger to the waiting queue.
+     * Registers a request with the floor to add a passenger to the queue.
      *
      * This method calls the floor object to increment the passenger waiting queue for that floor.  It also 
-     * marks the floor to be stopped at on the Elevator data member destinationFloor. 
+     * marks the floor to be stopped at on the Elevator data member destinationFloor.
      *
-     * @param requestFloor int set the floor to init a passenger waiting to load
-     * @param direction ...
+     * @param p Passenger Pass passenger object to init passenger on floor
      */
     public void registerRequest(Passenger p)
     {
@@ -167,7 +191,8 @@ public class Elevator
      * the floor passed as a parameter as a destination floor.  This is done regardless if it was previously
      * a destination floor or not.  It then increments the number of passengers destined for that floor by 1.
      *
-     * @param floor Floor number the passenger wishes to travel to.
+     * @param p Passenger object that includes current floor, destination floor.
+     * @throws CapactiyReachedException when elevator capacity has been reached.
      *
      */ 
     public void boardPassenger(Passenger p) throws CapacityReachedException 
@@ -182,6 +207,16 @@ public class Elevator
         destinationFloor[p.getDestinationFloor()] = true;
     }
 
+    /**
+     * Unloads a passenger to the current floor.
+     *
+     * This method iterates through the Elevator passengers, and unloads the first passenger it finds 
+     * destined for the current floor.  If a passenger is found, it removes that passenger from the Elevator
+     * ArrayList, and returns that object to the caller.  If no passenger is found, null is returned.
+     *
+     * @return Passenger unloaded from Elevator.  Null if no passengers are left to deboard.
+     *
+     */
     public Passenger unloadCurrentFloorPassengers()
     {
         for (Iterator<Passenger> it = passenger.iterator(); it.hasNext();)
@@ -210,7 +245,7 @@ public class Elevator
     {
         elevatorStatus = "Moving";
 
-        if ( (currentFloor <= 1 && getCurrentDirection() < 0) || (currentFloor >= BUILDING_FLOORS && getCurrentDirection() > 0))
+        if ( (currentFloor <= 1 && getCurrentDirection() < 0) || (currentFloor >= BUILDING_FLOORS && getCurrentDirection() > 0) )
         {
             doSwitchDirection();
 
@@ -228,8 +263,9 @@ public class Elevator
      *
      * When this method is called it clears the object state variables for the current floor.  This includes 
      * setting the destination floor of the current floor to false, and clearing any queued passengers for
-     * this floor. Finally, it prints a status message about stopping on a floor, then calls the overloaded
-     * toString() method to print the Elevator status.
+     * this floor. After loading, a check is made to the floor to get the Passenger count.  If it is more than 0 after loading
+     * then re-mark the floor for stopping to pick up the remaining passengers. Finally, it prints a status message about
+     * stopping on a floor, then calls the overloaded toString() method to print the Elevator status.
      *
      */
     public void stop()
@@ -238,9 +274,15 @@ public class Elevator
 
         boolean result = false;
 
-        result = f[currentFloor].loadUnloadPassengers(this);
+        f[currentFloor].loadUnloadPassengers(this);
 
-        if (result == false)
+        // If floor queue in current Elevator direction still has passengers > 0 an overflow must have occurred.
+        // This will reset the destinationFloor to true to pick up these passengers later.
+        if ( (getCurrentDirection() > 0) && (f[currentFloor].getPassengersQueuedUpCount() > 0) )
+        {
+            destinationFloor[currentFloor] = true;
+        }
+        else if ( (getCurrentDirection() < 0) && (f[currentFloor].getPassengersQueuedDownCount() > 0) )
         {
             destinationFloor[currentFloor] = true;
         }
@@ -316,6 +358,11 @@ public class Elevator
         return passenger.size();
     }
 
+    /**
+     * Returns the status of the Elevator.
+     * 
+     * @return Status of elevator (Moving, Stopped)
+     */
     public String getElevatorStatus()
     {
         return elevatorStatus;
@@ -326,13 +373,18 @@ public class Elevator
      *
      * This method returns the data member of the Elevator current floor value
      *
-     * @return current floor integer value
+     * @return current floor of Elevator
      */
     public int getCurrentFloor()
     {
         return currentFloor;
     }
 
+    /**
+     * Returns the direction of the Elevator.
+     *
+     * @return direction of elevator (1 = up, -1 = down)
+     */
     public int getCurrentDirection()
     {
         return currentDirection;
@@ -340,7 +392,6 @@ public class Elevator
 
     private int currentFloor;
     private int currentDirection;
-
     private String elevatorStatus;
 
     /**
@@ -350,6 +401,10 @@ public class Elevator
      * Thus, member [0] will go unused.
      */
     private Floor[] f;
+
+    /**
+     * ArrayList of Passenger objects to store the Elevator passengers.
+     */
 
     private ArrayList<Passenger> passenger;
 

@@ -1,14 +1,13 @@
 package cscie160.hw3;
 
 import java.util.Stack;
-import java.util.Random; // might be able to remove later!
 
 /**
  * Floor class for the Elevator simulator.
  *
  * @author Reagan Williams
  * @version 1.3 (hw3)
- * @since 2011-09-27
+ * @since 2011-10-08
  *
  */
 public class Floor
@@ -33,7 +32,7 @@ public class Floor
     /**
      * Floor constructor
      *
-     * This constructor sets the passengers waiting count data member.
+     * This constructor initializes the 3 queues for each floor: Resident, up, and down passengers.
      *
      */
 	public Floor()
@@ -51,7 +50,7 @@ public class Floor
      *
      * @param e Elevator object
      */
-	public boolean loadUnloadPassengers(Elevator e)
+	public void loadUnloadPassengers(Elevator e)
 	{
         // call Elevator unload passengers method
         int c = 0;
@@ -64,7 +63,7 @@ public class Floor
             if (p == null)
                 break;
 
-            p.setCurrentFloor(e.getCurrentFloor());
+            p.arrive();
 
             passengersResident.push(p);
             c++;
@@ -98,13 +97,6 @@ public class Floor
                 }
             }
         }
-
-        if (getPassengersQueuedUpCount() > 0 || getPassengersQueuedDownCount() > 0)
-        {
-            return false;
-        }
-
-        return true;
 	}
 
     /**
@@ -131,23 +123,39 @@ public class Floor
     }
 
     /**
-     * Get passenger count waiting on floor
+     * Get passenger count waiting for up service
      *
      * This method returns the Floor data member value that tracks the passengers
-     * waiting to board from a floor.
+     * waiting to board for up service.
      *
-     * @return count of passengers waiting to board
+     * @return count of passengers
      */
     public int getPassengersQueuedUpCount()
     {
         return passengersQueuedUp.size();
     }
 
+    /**
+     * Get passenger count waiting for down service
+     *
+     * This method returns the Floor data member value that tracks the passengers
+     * waiting to board for down service.
+     *
+     * @return count of passengers
+     */
     public int getPassengersQueuedDownCount()
     {
         return passengersQueuedDown.size();
     }
 
+    /**
+     * Get passenger count not waiting for service.
+     *
+     * This method returns the Floor data member value that tracks the passengers
+     * resident on a floor.
+     *
+     * @return count of passengers
+     */
     public int getPassengersResidentCount()
     {
         return passengersResident.size();
