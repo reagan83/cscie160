@@ -20,14 +20,13 @@ public class Floor
      *
      * @param args No parameters are used here.
      *
-     */
-	public static void main(String[] args)
-	{
-		Floor f = new Floor();
+    */
+    public static void main(String[] args)
+    {
+        Floor f = new Floor();
 
         System.out.println(f);
-
-	}
+    }
 
     /**
      * Floor constructor
@@ -35,8 +34,8 @@ public class Floor
      * This constructor initializes the 3 queues for each floor: Resident, up, and down passengers.
      *
      */
-	public Floor()
-	{
+    public Floor()
+    {
         passengersResident = new Stack<Passenger>();
         passengersQueuedUp = new Stack<Passenger>();
         passengersQueuedDown = new Stack<Passenger>();
@@ -50,8 +49,8 @@ public class Floor
      *
      * @param e Elevator object
      */
-	public void loadUnloadPassengers(Elevator e)
-	{
+    public void loadUnloadPassengers(Elevator e)
+    {
         // call Elevator unload passengers method
         int c = 0;
 
@@ -97,7 +96,7 @@ public class Floor
                 }
             }
         }
-	}
+    }
 
     /**
      * Add passenger boarding request
@@ -161,14 +160,14 @@ public class Floor
         return passengersResident.size();
     }
 
-   /**
-     * Returns the status of the Elevator object
+    /**
+     * Returns the status of the Floor object
      * 
      * This method is an overloaded toString method to return floor passenger waiting count.
      * 
      * @return Status containing passenger waiting count
      */
-	public String toString()
+    public String toString()
     {
         return getPassengersResidentCount() + "\t\t" + getPassengersQueuedUpCount() + "\t\t" + getPassengersQueuedDownCount();
     }
