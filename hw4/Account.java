@@ -4,13 +4,13 @@ import java.lang.Float;
 
 public class Account {
     private float balance;
-	
+
     public Account()
-	{
+    {
         balance = (float)0.00;
     }
 
-	public void setBalance(float b)
+    public void setBalance(float b)
     {
         balance = b;
     }
