@@ -23,6 +23,11 @@ public class ATMProxy implements ATM
 		InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
 		inputReader = new BufferedReader(inputStreamReader);
     }
+
+    public void disconnect() throws ATMException
+    {
+        printStream.println("EXIT");
+    }
 	
     public void deposit(float amount) throws ATMException 
 	{
@@ -46,8 +51,8 @@ public class ATMProxy implements ATM
 			String response = inputReader.readLine();
 			if (response != null)
 			{
-			System.out.println("Server returned: " + response);
-			return Float.parseFloat(response.trim());
+                System.out.println("Server returned: " + response);
+                return Float.parseFloat(response.trim());
 			} 
 			else 
 			{

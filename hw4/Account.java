@@ -2,7 +2,8 @@ package cscie160.hw4;
 
 import java.lang.Float;
 
-public class Account {
+public class Account
+{
     private float balance;
 
     public Account()
@@ -10,9 +11,10 @@ public class Account {
         balance = (float)0.00;
     }
 
-    public void setBalance(float b)
+    public Float setBalance(float b)
     {
         balance = b;
+        return new Float(balance);
     }
 
     public Float getBalance()
