@@ -1,6 +1,6 @@
 package cscie160.hw5;
 
-import java.rmi;
+import java.rmi.Remote;
 
 /**
  * ATM interface with RMI support.
@@ -11,7 +11,7 @@ import java.rmi;
  */
 public interface ATM extends java.rmi.Remote
 {
-	public void deposit(int accountNumber, float amount) throws ATMException, RemoteException;
-	public void withdraw(int accountNumber, float amount) throws ATMException, RemoteException;
-	public Float getBalance(int accountNumber) throws ATMException, RemoteException;
+	public void deposit(int accountNumber, float amount) throws ATMException, java.rmi.RemoteException;
+	public void withdraw(int accountNumber, float amount) throws ATMException, java.rmi.RemoteException;
+	public Float getBalance(int accountNumber) throws ATMException, java.rmi.RemoteException;
 }

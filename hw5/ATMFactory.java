@@ -1,6 +1,6 @@
 package cscie160.hw5;
 
-import java.rmi;
+import java.rmi.Remote;
 
 /**
  * ATM Factory interface with RMI support.
@@ -11,5 +11,5 @@ import java.rmi;
  */
 public interface ATMFactory extends java.rmi.Remote
 {
-	public ATM getATM() throws RemoteException;
+	public ATM getATM() throws java.rmi.RemoteException;
 }

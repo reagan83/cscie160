@@ -1,6 +1,6 @@
 package cscie160.hw5;
 
-import java.rmi;
+import java.rmi.Remote;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
@@ -14,14 +14,14 @@ public class ATMFactoryImpl extends UnicastRemoteObject implements ATMFactory
 {
     private String name;
 
-    public ATMFactoryImpl(String s) throws RemoteException
+    public ATMFactoryImpl(String s) throws java.rmi.RemoteException
     {
         super();
         name = s;
     }
 
-    public ATM getATM() throws RemoteException
+    public ATM getATM() throws java.rmi.RemoteException
     {
-        return new ATM();
+        return new ATMImpl();
     }
 }
