@@ -1,8 +1,10 @@
 package cscie160.hw5;
 
-import java.rmi.Remote;
+import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
+
+import java.util.Iterator;
 
 /**
  * ATMImpl server that interfaces with ATM
@@ -13,22 +15,7 @@ import java.util.HashMap;
  */
 public class ATMImpl extends UnicastRemoteObject implements ATM
 {
-    HashMap<int, Account> a;
-
-    public static void main(String[] args)
-    {
-        try
-        {
-            ATMImpl obj = new ATMImpl();
-            java.rmi.Naming.rebind("//localhost/atmimpl", obj);
-            System.out.println("ATMImpl bound in registry.");
-        }
-        catch (Exception e)
-        {
-            System.out.println("ATMImp error: " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
+    public static HashMap a;
 
     /**
      * ATM Impl constructor that creates 3 account objects with varying initial balances.
@@ -38,13 +25,23 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
         a = new HashMap();
 
         a.put(1, new Account(1));
-        a.get(1).setBalance(0);
+        Account act = (Account)a.get(1);
+        act.setBalance(0);
 
         a.put(2, new Account(2));
-        a.get(2).setBalance(500);
+
+        act = (Account)a.get(2);
+        act.setBalance(100);
 
         a.put(3, new Account(3));
-        a.get(3).setBalance(1000);
+
+        act = (Account)a.get(3);
+        act.setBalance(500);
+    }
+
+    public HashMap getAccountList()
+    {
+        return a;
     }
 	
     /**
@@ -53,9 +50,11 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
      * @param accountNumber Account number
      * @param amount Amount to deposit
      */
-    public void deposit(int accountNumber, float amount) throws ATMException, java.rmi.RemoteException
+    public void deposit(int accountNumber, float amount) throws java.rmi.RemoteException
     {
-        a.get(accountNumber).setBalance(a.getBalance() + amount);
+        Account act = (Account)a.get(accountNumber);
+
+        act.setBalance(act.getBalance() + amount);
     }
 
     /**
@@ -64,12 +63,14 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
      * @param accountNumber Account number
      * @param amount Amount to withdraw
      */
-    public void withdraw(int accountNumber, float amount) throws ATMException, java.rmi.RemoteException
+    public void withdraw(int accountNumber, float amount) throws java.rmi.RemoteException
     {
-        if (a.get(accountNumber).getBalance() >= amount)
-            a.get(accountNumber).setBalance(a.get(accountNumber).getBalance() - amount);
-        else
-            throw new ATMException("Insufficient funds.");
+        Account act = (Account)a.get(accountNumber);
+
+        if (act.getBalance() >= amount)
+            act.setBalance(act.getBalance() - amount);
+//        else
+//            throw new ATMException("Insufficient funds.");
     }
 
     /**
@@ -78,8 +79,19 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
      * @param accountNumber Account number
      * @return Account balance
      */
-    public Float getBalance(int accountNumber) throws ATMException, java.rmi.RemoteException
+    public Float getBalance(int accountNumber) throws java.rmi.RemoteException
     {
-        return a.get(accountNumber).getBalance();
+        Float b = (float)0.0;
+        try
+        {
+            Account act = (Account)a.get(accountNumber);
+            b = act.getBalance();
+        }
+        catch(Exception atme)
+        {
+            System.out.println("ATM Exception: " + atme.getMessage());
+        }
+
+        return b;
     }
 }

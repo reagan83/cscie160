@@ -47,7 +47,7 @@ public class Client {
                 System.out.println("Balance(0000001): "+atm.getBalance(0000001));
                 System.out.println("Balance(0000002): "+atm.getBalance(0000002));
                 System.out.println("Balance(0000003): "+atm.getBalance(0000003));
-            } catch (RemoteException re) {
+            } catch (Exception re) {
                 System.out.println("An exception occurred while communicating with the ATM");
                 re.printStackTrace();
             }

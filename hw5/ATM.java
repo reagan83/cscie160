@@ -11,7 +11,7 @@ import java.rmi.Remote;
  */
 public interface ATM extends java.rmi.Remote
 {
-	public void deposit(int accountNumber, float amount) throws ATMException, java.rmi.RemoteException;
-	public void withdraw(int accountNumber, float amount) throws ATMException, java.rmi.RemoteException;
-	public Float getBalance(int accountNumber) throws ATMException, java.rmi.RemoteException;
+	public void deposit(int accountNumber, float amount) throws java.rmi.RemoteException;
+	public void withdraw(int accountNumber, float amount) throws java.rmi.RemoteException;
+	public Float getBalance(int accountNumber) throws java.rmi.RemoteException;
 }

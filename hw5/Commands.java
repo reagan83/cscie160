@@ -1,4 +1,4 @@
-package cscie160.hw4;
+package cscie160.hw5;
 
 public enum Commands 
 {
