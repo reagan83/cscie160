@@ -1,12 +1,20 @@
 package cscie160.hw5;
 
-import java.net.*;
-import java.io.*;
-import java.util.StringTokenizer;
 import java.rmi.Naming;
 
+/**
+ * Server RMI ready class that registers ATMFactory object with RMIRegistry
+ * 
+ * @author Reagan Williams
+ * @version 1.5 (hw5)
+ * @since 2011-11-02
+ */
 public class Server 
 {
+    /**
+     * Sets up Server object and registers ATM object in the RMI registry.
+     *
+     */
     public Server()
     {
         try
@@ -24,8 +32,6 @@ public class Server
 
     public static void main(String[] args)
     {
-        System.out.println("Getting ATM Factory instance...");
-
         Server s = new Server();
     }
 }

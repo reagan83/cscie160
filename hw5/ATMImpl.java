@@ -1,13 +1,10 @@
 package cscie160.hw5;
 
-import java.rmi.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 
-import java.util.Iterator;
-
 /**
- * ATMImpl server that interfaces with ATM
+ * ATMImpl RMI ready class that interfaces with ATM
  * 
  * @author Reagan Williams
  * @version 1.5 (hw5)
@@ -39,11 +36,6 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
         act.setBalance(500);
     }
 
-    public HashMap getAccountList()
-    {
-        return a;
-    }
-	
     /**
      * Deposit amount into account
      *
@@ -81,17 +73,7 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
      */
     public Float getBalance(int accountNumber) throws java.rmi.RemoteException
     {
-        Float b = (float)0.0;
-        try
-        {
-            Account act = (Account)a.get(accountNumber);
-            b = act.getBalance();
-        }
-        catch(Exception atme)
-        {
-            System.out.println("ATM Exception: " + atme.getMessage());
-        }
-
-        return b;
+        Account act = (Account)a.get(accountNumber);
+        return (Float)act.getBalance();
     }
 }

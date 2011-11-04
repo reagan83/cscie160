@@ -1,21 +1,18 @@
 Reagan Williams
 Homework #5
 rwilliams@fas.harvard.edu
-10/25/2011
+11/10/2011
 
-This solution performs simple ATM functions through a client/server process over an established TCP protocol.
+This solution implements an ATM client/server model using the Java RMI.  The ATM supports ATMFactory objects along with handling multiple Accounts.
 
-To execute this solution, use two terminals and execute:
+To execute this solution, use three terminals and execute:
 
-java -classpath HW4.jar cscie160.hw4.Server 7777
-java -classpath HW4.jar cscie160.hw4.Client localhost 7777
+rmiregistry -J-cp -J.
+java -classpath HW5.jar cscie160.hw5.Server
+java -classpath HW5.jar cscie160.hw5.Client
 
-The output should show an amount being deposited, followed by a few withdraws including an overdrawn balance exception.
+The output will show 3 accounts being created with initial balances.  Afterwards, various methods are invoked to add/remove funds and the end-result matches what is expected as described in hw5.  The Client class is exactly as described from the hw5 assignment (with tab fixes)!
 
-I've also included junit tests in the cscie160/hw4/junit/ folder.  These files need to be moved to the root hw4/ folder for execution, but I moved them away to keep things tidy.
-
-I've also included an ant build.xml file that can be found in the cscie160/hw4/ folder.  This file accomplishes the requirements of the homework, without the extra credit (which I hope to submit soon).
-
-All of the JavaDoc comments contained in the cscie160/hw4/doc/ folder.
+All of the JavaDoc comments contained in the cscie160/hw5/doc/ folder.
 
 
