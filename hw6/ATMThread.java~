@@ -1,0 +1,17 @@
+package cscie160.hw6;
+
+public class ATMThread
+{
+    public ATMThread()
+    {
+    }
+
+    public static run()
+    {
+        while(true)
+        {
+            wait();
+        }
+    }
+
+}

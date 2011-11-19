@@ -9,8 +9,14 @@ public class Server
     private ServerSocket serverSocket;
     private ATM atmImplementation;
     private BufferedReader bufferedReader;
+    private LinkedList threadPool;
+
     public Server(int port) throws java.io.IOException
     {
+        threadPool = new LinkedList();
+
+        threadPool.add(new Thread(new ATMRunnable()));
+
         serverSocket = new ServerSocket(port);
         atmImplementation = new ATMImplementation(); 
     }
@@ -45,6 +51,10 @@ public class Server
                         System.out.println("Disconnect requested.");
                         break;
                     }
+
+
+                    ATMRunnable a = new ATMRunnable(atmImplementation, printStream);
+                    ATMRunnable(commandLine);
 
                     Float result = executeCommand(commandLine);
                     // Only BALANCE command returns non-null

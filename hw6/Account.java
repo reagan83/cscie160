@@ -3,7 +3,7 @@ package cscie160.hw6;
 import java.lang.Float;
 
 /**
- * Account class
+ * Account class with synchronized methods.
  *
  * Provides an interface to create an Account and set/update balances.
  */
@@ -25,18 +25,19 @@ public class Account
      * @param b Amount needing to be updated
      * @return Newly set balance
      */
-    public Float setBalance(float b)
+    public synchronized Float setBalance(float b)
     {
         balance = b;
+        notifyAll();
         return new Float(balance);
     }
 
     /**
-     * Returns the available balance
+     * Returns the available balance.
      *
      * @return Account balance
      */
-    public Float getBalance()
+    public synchronized Float getBalance()
     {
         return new Float(balance);
     }
