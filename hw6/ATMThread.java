@@ -14,7 +14,13 @@ public class ATMThread
     {
         while(true)
         {
-            wait();
+            if (queue is empty)
+                wait();
+           
+            // when notify
+
+            ATMRunnable from the queue list and execute the request. //(spawn new thread?)
+
         }
     }
 

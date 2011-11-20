@@ -3,26 +3,30 @@ package cscie160.hw6;
 import java.net.*;
 import java.io.*;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 public class Server 
 {	
     private ServerSocket serverSocket;
     private ATM atmImplementation;
     private BufferedReader bufferedReader;
-    private LinkedList threadPool;
+    private Vector threadPool;
 
     public Server(int port) throws java.io.IOException
     {
-        threadPool = new LinkedList();
+        threadPool = new Vector();
 
-        threadPool.add(new Thread(new ATMRunnable()));
+        threadPool.add(new Thread(new ATMThread()));
+
+        Thread t = (Thread)threadPool.elementAt(1);
+        t.start();
 
         serverSocket = new ServerSocket(port);
-        atmImplementation = new ATMImplementation(); 
+        atmImplementation = new ATMImplementation();
     }
 
     /** serviceClient accepts a client connection and reads lines from the socket.
-     *  Each line is handed to executeCommand for parsing and execution.
+     *  Each line is handedt weo executeCommand for parsing and execution.
      */
     public void serviceClient() throws java.io.IOException
     {
@@ -42,6 +46,7 @@ public class Server
         try
         {
             String commandLine;
+
             while ((commandLine = bufferedReader.readLine()) != null)
             {
                 try
@@ -51,7 +56,6 @@ public class Server
                         System.out.println("Disconnect requested.");
                         break;
                     }
-
 
                     ATMRunnable a = new ATMRunnable(atmImplementation, printStream);
                     ATMRunnable(commandLine);
