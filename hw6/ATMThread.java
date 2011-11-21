@@ -1,26 +1,40 @@
 package cscie160.hw6;
 
-public class ATMThread
+import java.util.Vector;
+
+public class ATMThread implements Runnable
 {
+    Vector requestQueue;
 
-    // request queue?
-    // items get added to this queue and this thread executes them?
-
-    public ATMThread()
+    public ATMThread(Vector rq)
     {
+        this.requestQueue = rq;
     }
 
-    public static run()
+    public void run()
     {
         while(true)
         {
-            if (queue is empty)
-                wait();
-           
-            // when notify
+            try
+            {
+                if (requestQueue.isEmpty())
+                {
+                    System.out.println("Thread waiting...");
+                    wait();
+                }
+            }
+            catch (InterruptedException e)
+            {
+            }
 
-            ATMRunnable from the queue list and execute the request. //(spawn new thread?)
+            System.out.println("Thread executing...");
 
+            ATMRunnable a = (ATMRunnable)requestQueue.get(0);
+            a.run();
+
+            requestQueue.remove(0);
+
+            notifyAll();
         }
     }
 

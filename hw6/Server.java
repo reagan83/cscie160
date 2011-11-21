@@ -10,16 +10,15 @@ public class Server
     private ServerSocket serverSocket;
     private ATM atmImplementation;
     private BufferedReader bufferedReader;
-    private Vector threadPool;
+    private Vector requestQueue;
 
     public Server(int port) throws java.io.IOException
     {
-        threadPool = new Vector();
+        requestQueue = new Vector();
 
-        threadPool.add(new Thread(new ATMThread()));
+        Thread t1 = new Thread(new ATMThread(requestQueue));
 
-        Thread t = (Thread)threadPool.elementAt(1);
-        t.start();
+        t1.start();
 
         serverSocket = new ServerSocket(port);
         atmImplementation = new ATMImplementation();
@@ -57,15 +56,10 @@ public class Server
                         break;
                     }
 
-                    ATMRunnable a = new ATMRunnable(atmImplementation, printStream);
-                    ATMRunnable(commandLine);
+                    ATMRunnable a = new ATMRunnable(atmImplementation, printStream, commandLine);
 
-                    Float result = executeCommand(commandLine);
-                    // Only BALANCE command returns non-null
-                    if (result != null)
-                    {
-                        printStream.println(result);  // Write it back to the client
-                    }
+                    requestQueue.add(a);
+                    notifyAll();
                 }
                 catch (ATMException atmex)
                 {
@@ -80,59 +74,6 @@ public class Server
         }
     }
 
-    /** The logic here is specific to our protocol.  We parse the string
-     *  according to that protocol.
-     */
-    private Float executeCommand(String commandLine) throws ATMException
-    {
-        // Break out the command line into String[]
-        StringTokenizer tokenizer = new StringTokenizer(commandLine);
-        String commandAndParam[] = new String[tokenizer.countTokens()];
-        int index = 0;
-
-        while (tokenizer.hasMoreTokens())
-        {
-            commandAndParam[index++] = tokenizer.nextToken();
-        }
-
-        String command = commandAndParam[0];
-        // Dispatch BALANCE request without further ado.
-        if (command.equalsIgnoreCase(Commands.BALANCE.toString()))
-        {
-            return atmImplementation.getBalance();
-        }
-
-        // Must have 2nd arg for amount when processing DEPOSIT/WITHDRAW commands
-        if (commandAndParam.length < 2)
-        {
-            throw new ATMException("Missing amount for command \"" + command + "\"");
-        }
-
-        try
-        {
-            float amount = Float.parseFloat(commandAndParam[1]);
-
-            if (command.equalsIgnoreCase(Commands.DEPOSIT.toString()))
-            {
-                atmImplementation.deposit(amount);
-            }
-            else if (command.equalsIgnoreCase(Commands.WITHDRAW.toString()))
-            {
-                atmImplementation.withdraw(amount);
-            }
-            else
-            {
-                throw new ATMException("Unrecognized command: " + command);
-            }
-        }
-        catch (NumberFormatException nfe)
-        {
-            throw new ATMException("Unable to make float from input: " + commandAndParam[1]);
-        }
-
-        // BALANCE command returned result above.  Other commands return null;
-        return null;
-    }
 
     public static void main(String argv[])
     {

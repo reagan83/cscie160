@@ -1,17 +1,22 @@
 package cscie160.hw6;
 
-public class ATMRunnable implements Runnable
-{
-    ATM atm;
-    PrintStream output;
+import java.io.PrintStream;
+import java.util.StringTokenizer;
 
-    public ATMRunnable(ATM a, PrintStream o)
+public class ATMRunnable
+{
+    private ATM atm;
+    private PrintStream output;
+    private String commandLine;
+
+    public ATMRunnable(ATM a, PrintStream o, String cl)
     {
-        atm = a;
-        output = o;
+        this.atm = a;
+        this.output = o;
+        this.commandLine = cl;
     }
 
-    public static run(String commandLine)
+    public void run()
     {
         // Break out the command line into String[]
         StringTokenizer tokenizer = new StringTokenizer(commandLine);
@@ -25,19 +30,17 @@ public class ATMRunnable implements Runnable
 
         String command = commandAndParam[0];
 
-        switch (Command.valueOf(command))
+        if (command.compareToIgnoreCase("BALANCE") == 0)
         {
-
-        case BALANCE:
             Float result = atm.getBalance();
 
             if (result != null)
             {
-                printStream.println(result);
+                output.println(result);
             }
-            break;
-
-        case DEPOSIT:
+        }
+        else if (command.compareToIgnoreCase("DEPOSIT") == 0)
+        {
             if (commandAndParam.length < 2)
             {
                 throw new ATMException("Missing amount for command \"" + command + "\"");
@@ -45,11 +48,10 @@ public class ATMRunnable implements Runnable
 
             atm.deposit(Float.parseFloat(commandAndParam[1]));
 
-            printStream.prinln("Deposited $" + Float.parseFloat(commandAndParam[1]) + ".");
-
-            break;
-
-        case WITHDRAW:
+            output.println("Deposited $" + Float.parseFloat(commandAndParam[1]) + ".");
+        }
+        else if (command.compareToIgnoreCase("WITHDRAW") == 0)
+        {
             if (commandAndParam.length < 2)
             {
                 throw new ATMException("Missing amount for command \"" + command + "\"");
@@ -57,14 +59,11 @@ public class ATMRunnable implements Runnable
 
             atm.withdraw(Float.parseFloat(commandAndParam[1]));
 
-            printStream.prinln("Withdraw:  $" + Float.parseFloat(commandAndParam[1]) + ".");
-
-            break;
-
-        default:
+            output.println("Withdraw:  $" + Float.parseFloat(commandAndParam[1]) + ".");
+        }
+        else
+        {
             throw new ATMException("Unrecognized command: " + command);
-            break;
-
         }
 
         // try
