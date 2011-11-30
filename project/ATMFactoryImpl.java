@@ -1,4 +1,4 @@
-package cscie160.hw5;
+package cscie160.project;
 
 import java.rmi.server.UnicastRemoteObject;
 
@@ -6,8 +6,8 @@ import java.rmi.server.UnicastRemoteObject;
  * ATM Factory Implementation that interfaces with ATM Factory
  * 
  * @author Reagan Williams
- * @version 1.5 (hw5)
- * @since 2011-11-02
+ * @version 1.7 (hw7)
+ * @since 2011-12-07
  */
 public class ATMFactoryImpl extends UnicastRemoteObject implements ATMFactory
 {

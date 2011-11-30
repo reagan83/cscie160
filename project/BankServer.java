@@ -1,5 +1,10 @@
 package cscie160.project;
 
+import java.rmi.server.UnicastRemoteObject;
+import java.rmi.RemoteException;
+import java.rmi.Remote;
+import java.rmi.Naming;
+
 /**
  * BankServer class
  * 
@@ -9,14 +14,34 @@ package cscie160.project;
  */
 public class BankServer
 {
-    public static Bank b;
-    public static Security s;
-
+    /**
+     * Sets up BankServer object and registers in the RMI registry.
+     */
     public BankServer()
     {
-        b = new Bank();
-        s = new Security();
+        try
+        {
+            BankImpl b = new BankImpl();
+            Naming.rebind("//localhost/bank", b);
+            System.out.println("Bank bound in registry.");
 
-        // register both with the rmiregistry
+            Security s = new Security();
+            Naming.rebind("//localhost/security", s);
+            System.out.println("Security bound in registry.");
+        }
+        catch (RemoteException re)
+        {
+            System.out.println("Remote error: " + re.getMessage());
+        }
+        catch (Exception e)
+        {
+            System.out.println("BankServer error: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static void main(String[] args)
+    {
+        BankServer bs = new BankServer();
     }
 }

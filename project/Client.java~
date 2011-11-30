@@ -50,11 +50,6 @@ public class Client
         }
     }
 
-    private AccountInfo getAccountInfo(int number, int pin)
-    {
-        return new AccountInfo(number, pin);
-    }
-
     public static void testATM(ATM atm)
     {
         if (atm != null)

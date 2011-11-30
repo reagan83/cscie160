@@ -6,8 +6,8 @@ import java.lang.Float;
  * Account interface to create an Account objects and set/update balances.
  * 
  * @author Reagan Williams
- * @version 1.5 (hw5)
- * @since 2011-11-02
+ * @version 1.7 (project)
+ * @since 2011-12-02
  */
 public class Account
 {
@@ -36,7 +36,7 @@ public class Account
         if (b > balance)
         {
             // error
-            System.out.println("Error");
+            System.out.println("[" + Account.class.getName() + "] Error.  This needs an exception!");
         }
         else
         {

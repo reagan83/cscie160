@@ -11,21 +11,21 @@ import java.lang.Float;
  */
 public class AccountInfo
 {
-    Account account;
+    int accountNumber;
     int accountPin;
 
-    public AccountInfo(Account a, int p)
+    public AccountInfo(int n, int p)
     {
-        account = a;
+        accountNumber = n;
         accountPin = p;
     }
 
-    private int getAccountNumber()
+    public int getAccountNumber()
     {
-        return account.getAccountNumber();
+        return accountNumber;
     }
 
-    private int getPinNumber()
+    public int getPinNumber()
     {
         return accountPin;
     }
@@ -34,7 +34,9 @@ public class AccountInfo
     {
         if (o instanceof AccountInfo)
         {
-            return (this.getAccountNumber() == o.getAccountNumber() && this.getPinNumber() == o.getPinNumber());
+            AccountInfo tmp = (AccountInfo)o;
+
+            return (this.getAccountNumber() == tmp.getAccountNumber() && this.getPinNumber() == tmp.getPinNumber());
         }
 
         return false;

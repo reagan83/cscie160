@@ -1,0 +1,83 @@
+package cscie160.project;
+
+import java.rmi.server.UnicastRemoteObject;
+import java.rmi.Remote;
+import java.util.HashMap;
+
+/**
+ * ATM RMI ready class that interfaces with ATM
+ * 
+ * @author Reagan Williams
+ * @version 1.7 (project)
+ * @since 2011-12-02
+ */
+public class ATM extends java.rmi.Remote //, UnicastRemoteObject implements ATM
+{
+    private HashMap a;
+    private float cashBalance;
+
+    /**
+     * ATM Impl constructor that creates 3 account objects with varying initial balances.
+     */
+    public ATM() throws java.rmi.RemoteException
+    {
+        cashBalance = 500.00;
+
+        Account act;
+
+        a = new HashMap();
+
+        a.put(1, new Account(1));
+        act = (Account)a.get(1);
+        act.setBalance(0);
+
+        a.put(2, new Account(2));
+        act = (Account)a.get(2);
+        act.setBalance(100);
+
+        a.put(3, new Account(3));
+        act = (Account)a.get(3);
+        act.setBalance(500);
+    }
+
+    /**
+     * Deposits amount into account
+     *
+     * @param accountNumber Account number
+     * @param amount Amount to deposit
+     */
+    public void deposit(AccountInfo ai, float amount) throws java.rmi.RemoteException
+    {
+        Account act = (Account)a.get(accountNumber);
+
+        act.setBalance(act.getBalance() + amount);
+    }
+
+    /**
+     * Withdraw amount from account
+     *
+     * @param accountNumber Account number
+     * @param amount Amount to withdraw
+     */
+    public void withdraw(AccountInfo ai, float amount) throws java.rmi.RemoteException
+    {
+        Account act = (Account)a.get(accountNumber);
+
+        if (act.getBalance() >= amount)
+            act.setBalance(act.getBalance() - amount);
+//        else
+//            throw new ATMException("Insufficient funds.");
+    }
+
+    /**
+     * Return the account balance
+     *
+     * @param accountNumber Account number
+     * @return Account balance
+     */
+    public Float getBalance(AccountInfo ai) throws java.rmi.RemoteException
+    {
+        Account act = (Account)a.get(accountNumber);
+        return (Float)act.getBalance();
+    }
+}
