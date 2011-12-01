@@ -12,7 +12,7 @@ import java.rmi.Remote;
  * @version 1.7 (project)
  * @since 2011-12-07
  */
-public class BankImpl extends UnicastRemoteObject
+public class BankImpl extends UnicastRemoteObject implements Bank
 {
     private HashMap a;
 
@@ -21,32 +21,32 @@ public class BankImpl extends UnicastRemoteObject
         a = new HashMap();
         Account acc;
 
-        a.put(1, new Account(1));
+        a.put(1, new AccountImpl(1));
 
         acc = (Account)a.get(1);
         acc.addBalance(0);
 
-        a.put(2, new Account(2));
+        a.put(2, new AccountImpl(2));
 
         acc = (Account)a.get(2);
         acc.addBalance(100);
 
-        a.put(3, new Account(3));
+        a.put(3, new AccountImpl(3));
 
         acc = (Account)a.get(3);
         acc.addBalance(500);
     }
 
-    public int getAccount(int accountNumber) throws java.rmi.RemoteException
+    public Account getAccount(int accountNumber) throws java.rmi.RemoteException
     {
+//        System.out.println("Object: " + a.get(accountNumber));
         if (a.size() >= accountNumber)
         {
-//            return (Account)a.get(accountNumber);
-            return 1;
+            return (Account)a.get(accountNumber);
         }
 
         System.out.println("[" + Bank.class.getName() + "] Invalid account number.");
-        return 0;
+        return null;
     }
 
     // test helper function

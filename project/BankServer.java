@@ -25,7 +25,7 @@ public class BankServer
             Naming.rebind("//localhost/bank", b);
             System.out.println("Bank bound in registry.");
 
-            Security s = new Security();
+            SecurityImpl s = new SecurityImpl();
             Naming.rebind("//localhost/security", s);
             System.out.println("Security bound in registry.");
         }

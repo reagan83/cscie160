@@ -11,6 +11,6 @@ import java.rmi.Remote;
  */
 public interface Bank extends java.rmi.Remote
 {
-    public int getAccount(int accountNumber) throws java.rmi.RemoteException;
+    public Account getAccount(int accountNumber) throws java.rmi.RemoteException;
     public void printBalances() throws java.rmi.RemoteException;
 }

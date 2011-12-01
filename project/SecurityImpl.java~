@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * Security class
+ * SecurityImpl class
  * 
  * @author Reagan Williams
  * @version 1.7 (project)
@@ -20,7 +20,7 @@ public class SecurityImpl extends UnicastRemoteObject implements Security
     // authorization permissions
     private Vector depositAccess, withdrawAccess, balanceAccess;
 
-    public Security() throws java.rmi.RemoteException
+    public SecurityImpl() throws java.rmi.RemoteException
     {
         ap = new HashMap();
 

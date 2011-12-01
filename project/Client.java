@@ -50,7 +50,7 @@ public class Client
         }
     }
 
-    private AccountInfo getAccountInfo(int number, int pin)
+    private static AccountInfo getAccountInfo(int number, int pin)
     {
         return new AccountInfo(number, pin);
     }

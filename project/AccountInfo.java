@@ -3,13 +3,13 @@ package cscie160.project;
 import java.lang.Float;
 
 /**
- * Account Info
+ * AccountInfo class that stores account numbers and associated security pins
  * 
  * @author Reagan Williams
  * @version 1.7 (project)
  * @since 2011-12-07
  */
-public class AccountInfo
+public class AccountInfo implements java.io.Serializable
 {
     int accountNumber;
     int accountPin;

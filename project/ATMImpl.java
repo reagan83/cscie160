@@ -15,14 +15,27 @@ import java.util.HashMap;
  */
 public class ATMImpl extends UnicastRemoteObject implements ATM
 {
-    private float cashBalance;
+    private float atmCashBalance;
+    private Security security;
+    private Bank bank;
 
     /**
      * ATM Impl constructor that creates 3 account objects with varying initial balances.
      */
     public ATMImpl() throws java.rmi.RemoteException
     {
-        cashBalance = (float)500.00;
+        addATMCashBalance(500);
+
+        try
+        {
+            security = (Security)Naming.lookup("//localhost/security");
+            bank = (Bank)Naming.lookup("//localhost/bank");
+        }
+        catch (Exception e)
+        {
+            System.out.println("Exception: " + e);
+        }
+
     }
 
     /**
@@ -31,11 +44,32 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
      * @param accountNumber Account number
      * @param amount Amount to deposit
      */
-    public void deposit(AccountInfo ai, float amount) throws java.rmi.RemoteException
+    public boolean deposit(AccountInfo ai, float amount) throws java.rmi.RemoteException
     {
-        // Account act = (Account)a.get(accountNumber);
+        try
+        {
+            security.authenticate(ai);
+            security.authorizeTransaction("DEPOSIT", ai);
 
-        // act.setBalance(act.getBalance() + amount);
+            Account a = (Account)bank.getAccount(ai.getAccountNumber());
+            a.addBalance(amount);
+
+            // It might make intuitive sense to perform this operation, but because it is
+            //  assumed that deposits are checks (not cash) the ATM cash balance is not increased.
+            // this.addATMCashBalance(amount);
+        }
+        catch (ATMException atme)
+        {
+            System.out.println("ATM Exception: " + atme);
+            return false;
+        }
+        catch (Exception e)
+        {
+            System.out.println("Exception caught: " + e);
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -44,14 +78,36 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
      * @param accountNumber Account number
      * @param amount Amount to withdraw
      */
-    public void withdraw(AccountInfo ai, float amount) throws java.rmi.RemoteException
+    public boolean withdraw(AccountInfo ai, float amount) throws java.rmi.RemoteException
     {
-        // Account act = (Account)ai.get(accountNumber);
+        try
+        {
+            security.authenticate(ai);
+            security.authorizeTransaction("WITHDRAW", ai);
 
-        // if (act.getBalance() >= amount)
-        //     act.setBalance(act.getBalance() - amount);
-//        else
-//            throw new ATMException("Insufficient funds.");
+            Account a = (Account)bank.getAccount(ai.getAccountNumber());
+
+            if (getATMCashBalance() < amount)
+                throw new ATMException("Not enough cash in this ATM to perform this operation.");
+
+            if (a.getBalance() < amount)
+                throw new ATMException("Insufficient funds in account to perform this operation.");
+
+            a.subtractBalance(amount);
+            this.subtractATMCashBalance(amount);
+        }
+        catch (ATMException atme)
+        {
+            System.out.println("ATM Exception: " + atme);
+            return false;
+        }
+        catch (Exception e)
+        {
+            System.out.println("Exception caught: " + e);
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -60,39 +116,39 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
      * @param accountNumber Account number
      * @param amount Amount to withdraw
      */
-    public void transfer(AccountInfo from, AccountInfo to, float amount) throws java.rmi.RemoteException
+    public boolean transfer(AccountInfo from, AccountInfo to, float amount) throws java.rmi.RemoteException
     {
-//        Account act = (Account)a.get(accountNumber);
-
         // notify all registered listeners of the transaction
-        // use security to authenticate account
-        // use security to authorize transfer
-        // use bank to obtain account references
-        // use reference to perform transaction
 
         try
         {
+            security.authenticate(from);
+            security.authenticate(to);
+            security.authorizeTransaction("WITHDRAW", from);
+            security.authorizeTransaction("DEPOSIT", to);
 
-            // System.out.println("Connecting to RMI server");
-            // Bank b = (Bank)Naming.lookup("//localhost/bank");
+            bank.printBalances();
 
-            // System.out.println("Before balance changes:");
-            // b.printBalances();
+            if (this.withdraw(from, amount))
+            {
+                this.deposit(to, amount);
+                System.out.println("Successful transfer!");
+            }
 
-            // Account a = (Account)b.getAccount(from.getAccountNumber());
-
-            // a.addBalance(50);
-
-            // System.out.println("After balance changes:");
-
-            // b.printBalances();
-
+            bank.printBalances();
+        }
+        catch (ATMException atme)
+        {
+            System.out.println("ATM Exception: " + atme);
+            return false;
         }
         catch (Exception e)
         {
-            System.out.println("Exception: " + e);
+            System.out.println("Exception caught: " + e);
+            return false;
         }
 
+        return true;
     }
 
     /**
@@ -103,37 +159,55 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
      */
     public Float getBalance(AccountInfo ai) throws java.rmi.RemoteException
     {
-        // Account act = (Account)a.get(accountNumber);
-        // return (Float)act.getBalance();
-        return (float)0.0;
+        Float balance = (float)0.00;
+
+        try
+        {
+            security.authenticate(ai);
+            security.authorizeTransaction("BALANCE", ai);
+
+            Account a = (Account)bank.getAccount(ai.getAccountNumber());
+            balance = (Float)a.getBalance();
+        }
+        catch (ATMException atme)
+        {
+            System.out.println("ATM Exception: " + atme);
+        }
+        catch (Exception e)
+        {
+            System.out.println("Exception caught: " + e);
+        }
+
+        return balance;
+    }
+
+    private void addATMCashBalance(float amount)
+    {
+        this.atmCashBalance = amount;
+    }
+
+    private void subtractATMCashBalance(float amount)
+    {
+        this.atmCashBalance -= amount;
+    }
+
+    private float getATMCashBalance()
+    {
+        return atmCashBalance;
     }
 
     public static void main(String[] args)
     {
+        ATM a;
 
         try
         {
-            System.out.println("Connecting to RMI server");
-            BankImpl b = (BankImpl)Naming.lookup("//localhost/bank");
-
-            System.out.println("Before balance changes:");
+            a = new ATMImpl();
+            a.transfer(new AccountInfo(3, 3456), new AccountInfo(2, 2345), (float)50.00);
         }
-        catch (Exception e)
+        catch (RemoteException re)
         {
-            System.out.println("Exception: " + e);
+            System.out.println("Remote Exception: " + re);
         }
-
-        // ATM a;
-
-        // try
-        // {
-        //     a = new ATMImpl();
-        //     a.transfer(new AccountInfo(1, 1234), new AccountInfo(2, 2345), (float)150.00);
-        // }
-        // catch (RemoteException re)
-        // {
-        //     System.out.println("Remote Exception: " + re);
-        // }
-
     }
 }

@@ -27,7 +27,6 @@ public class ATMFactoryImpl extends UnicastRemoteObject implements ATMFactory
      */
     public ATM getATM() throws java.rmi.RemoteException
     {
-        // this should return remote reference to an ATM object?
         return new ATMImpl();
     }
 }

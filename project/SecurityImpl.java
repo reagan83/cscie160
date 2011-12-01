@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * Security class
+ * SecurityImpl class
  * 
  * @author Reagan Williams
  * @version 1.7 (project)
@@ -20,7 +20,7 @@ public class SecurityImpl extends UnicastRemoteObject implements Security
     // authorization permissions
     private Vector depositAccess, withdrawAccess, balanceAccess;
 
-    public Security() throws java.rmi.RemoteException
+    public SecurityImpl() throws java.rmi.RemoteException
     {
         ap = new HashMap();
 
@@ -45,57 +45,54 @@ public class SecurityImpl extends UnicastRemoteObject implements Security
         
     }
 
-    public boolean authorizeTransaction(String transactionType, AccountInfo ai) throws java.rmi.RemoteException
+    public void authorizeTransaction(String transactionType, AccountInfo ai) throws java.rmi.RemoteException, ATMException
     {
-        boolean returnval = false;
+        boolean auth = false;
         int accountNumber = ai.getAccountNumber();
 
         if (transactionType.equals("BALANCE"))
         {
             if (balanceAccess.contains(accountNumber))
-                returnval = true;
+                auth = true;
         }
         else if (transactionType.equals("WITHDRAW"))
         {
             if (withdrawAccess.contains(accountNumber))
-                returnval = true;
+                auth = true;
         }
         else if (transactionType.equals("DEPOSIT"))
         {
             if (depositAccess.contains(accountNumber))
-                returnval = true;
+                auth = true;
         }
         else
         {
-            // security exception
-            System.out.println("[" + Security.class.getName() + "] Invalid transaction type.");
+            throw new ATMException("Invalid security authorization transaction type.");
         }
 
-        return returnval;
+        if (auth == false)
+        {
+            throw new ATMException("Account not authorized to perform this transaction type (" + transactionType + ").");
+        }
     }
 
-    public boolean authenticate(AccountInfo ai) throws java.rmi.RemoteException
+    public void authenticate(AccountInfo ai) throws java.rmi.RemoteException, ATMException
     {
         AccountInfo tmp = (AccountInfo)ap.get(ai.getAccountNumber());
 
-        if (tmp.equals(ai))
+        if (!tmp.equals(ai))
         {
-            return true;
+            throw new ATMException("Security authenication failed.");
         }
-
-        return false;
     }
 
     public static void main(String[] args)
     {
         try
         {
-            Security s = new Security();
-
-            System.out.println("Authenticate: " + s.authenticate(new AccountInfo(2, 23435)));
+            Security s = new SecurityImpl();
 
             AccountInfo ainfo = new AccountInfo(2, 2345);
-            System.out.println("Withdraw Balance: " + s.authorizeTransaction("WITHDRAW", ainfo));
 //        System.out.println("Authorized Balance: " + s.authorizeTransaction("BALANCE", new AccountInfo2));
 //        System.out.println("Authorized Balance: " + s.authorizeTransaction("BALANCE", 3));
         }
