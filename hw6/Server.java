@@ -5,27 +5,53 @@ import java.io.*;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+/**
+ * Server class for the ATM.
+ * 
+ * @author Reagan Williams
+ * @version 1.6 (hw6)
+ * @since 2011-12-02
+ */
 public class Server 
 {	
     private ServerSocket serverSocket;
     private ATM atmImplementation;
     private BufferedReader bufferedReader;
     private Vector requestQueue;
+    private ATMThread atmThread;
+    private Thread t1, t2, t3, t4, t5;
 
+    /**
+     * Server constructor initiates Threads and request queue
+     *
+     * @param port Port number for server
+     */
     public Server(int port) throws java.io.IOException
     {
         requestQueue = new Vector();
+        atmThread = new ATMThread(requestQueue);
 
-        Thread t1 = new Thread(new ATMThread(requestQueue));
+        t1 = new Thread(atmThread);
+        t2 = new Thread(atmThread);
+        t3 = new Thread(atmThread);
+        t4 = new Thread(atmThread);
+        t5 = new Thread(atmThread);
 
         t1.start();
+        t2.start();
+        t3.start();
+        t4.start();
+        t5.start();
 
         serverSocket = new ServerSocket(port);
         atmImplementation = new ATMImplementation();
     }
 
-    /** serviceClient accepts a client connection and reads lines from the socket.
-     *  Each line is handedt weo executeCommand for parsing and execution.
+    /**
+     * serviceClient accepts a client connection and reads lines from the socket.
+     * In addition, commands are submitted to the Thread requestQueue to be handled by an ATMThread.
+     *
+     * @throws java.io.IOException
      */
     public void serviceClient() throws java.io.IOException
     {
@@ -48,24 +74,22 @@ public class Server
 
             while ((commandLine = bufferedReader.readLine()) != null)
             {
-                try
+                if (commandLine.equals("EXIT"))
                 {
-                    if (commandLine.equals("EXIT"))
-                    {
-                        System.out.println("Disconnect requested.");
-                        break;
-                    }
-
-                    ATMRunnable a = new ATMRunnable(atmImplementation, printStream, commandLine);
-
-                    requestQueue.add(a);
-                    notifyAll();
+                    System.out.println("Disconnect requested.");
+                    break;
                 }
-                catch (ATMException atmex)
+
+                ATMRunnable a = new ATMRunnable(atmImplementation, printStream, commandLine);
+
+                synchronized (requestQueue)
                 {
-                    System.out.println("ERROR: " + atmex);
+                    requestQueue.add(a);
+                    requestQueue.notifyAll();
                 }
             }
+
+            System.out.println("Finished while loop...");
         }
         catch (SocketException sException)
         {
@@ -73,7 +97,6 @@ public class Server
             System.out.println("done");
         }
     }
-
 
     public static void main(String argv[])
     {

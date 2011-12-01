@@ -2,40 +2,80 @@ package cscie160.hw6;
 
 import java.util.Vector;
 
+/**
+ * ATM Thread class.
+ * 
+ * @author Reagan Williams
+ * @version 1.6 (hw6)
+ * @since 2011-12-02
+ */
 public class ATMThread implements Runnable
 {
     Vector requestQueue;
 
+    /**
+     * Default ATMThread constructor initiates requestQueue
+     *
+     * @param rq Request queue object
+     */
     public ATMThread(Vector rq)
     {
         this.requestQueue = rq;
     }
 
+    /**
+     * Main thread method pops oldest ATMRunnable object off of the Vector and executes it.
+     */
     public void run()
     {
-        while(true)
+        while (true)
         {
+            synchronized (requestQueue)
+            {
+                try
+                {
+                    if (requestQueue.isEmpty())
+                    {
+                        System.out.println("Thread " + Thread.currentThread() + " waiting...");
+                        requestQueue.wait();
+                    }
+                }
+                catch (InterruptedException e)
+                {
+                }
+                catch (Exception e)
+                {
+                    System.out.println("Exception caught: " + e);
+                }
+
+                if (!requestQueue.isEmpty())
+                {
+                    System.out.println("Thread " + Thread.currentThread() + " executing...");
+
+                    ATMRunnable a = (ATMRunnable)requestQueue.get(0);
+                    try
+                    {
+                        a.run();
+                    }
+                    catch (ATMException e)
+                    {
+                        System.out.println("ATM Exception caught: " + e);
+                    }
+
+                    requestQueue.remove(0);
+                    System.out.println("Thread " + Thread.currentThread() + " completed.");
+                }
+
+                requestQueue.notifyAll();
+            }
+
             try
             {
-                if (requestQueue.isEmpty())
-                {
-                    System.out.println("Thread waiting...");
-                    wait();
-                }
+                Thread.sleep(1000);
             }
-            catch (InterruptedException e)
+            catch (Exception e2)
             {
             }
-
-            System.out.println("Thread executing...");
-
-            ATMRunnable a = (ATMRunnable)requestQueue.get(0);
-            a.run();
-
-            requestQueue.remove(0);
-
-            notifyAll();
         }
     }
-
 }

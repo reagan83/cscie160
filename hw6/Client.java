@@ -1,5 +1,12 @@
 package cscie160.hw6;
 
+/**
+ * Client for the ATM project.
+ * 
+ * @author Reagan Williams
+ * @version 1.6 (hw6)
+ * @since 2011-12-02
+ */
 public class Client 
 {
     public static void main(String[] args) 

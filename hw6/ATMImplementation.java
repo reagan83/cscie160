@@ -1,9 +1,14 @@
 package cscie160.hw6;
 
 /**
- * Implements an ATM interface to perform basic ATM operations.
+ * ATM Implementation class to provide an implementation to basic ATM operations.
+ * 
+ * @author Reagan Williams
+ * @version 1.6 (hw6)
+ * @since 2011-12-02
  */
-public class ATMImplementation implements ATM {
+public class ATMImplementation implements ATM
+{
     Account a;
 
     /**

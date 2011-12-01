@@ -6,13 +6,17 @@ import java.lang.Float;
  * Account class with synchronized methods.
  *
  * Provides an interface to create an Account and set/update balances.
+ * 
+ * @author Reagan Williams
+ * @version 1.6 (hw6)
+ * @since 2011-12-02
  */
 public class Account
 {
     private float balance;
 
     /**
-     * Default constructor.  Sets balance to 0.
+     * Default constructor initiates balance to 0.
      */
     public Account()
     {
