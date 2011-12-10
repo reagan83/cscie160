@@ -19,4 +19,24 @@ public class AccountInfo
         account = a;
         accountPin = p;
     }
+
+    private int getAccountNumber()
+    {
+        return account.getAccountNumber();
+    }
+
+    private int getPinNumber()
+    {
+        return accountPin;
+    }
+
+    public boolean equals(Object o)
+    {
+        if (o instanceof AccountInfo)
+        {
+            return (this.getAccountNumber() == o.getAccountNumber() && this.getPinNumber() == o.getPinNumber());
+        }
+
+        return false;
+    }
 }

@@ -3,7 +3,7 @@ package cscie160.project;
 import java.util.HashMap;
 
 /**
- * Security class
+ * Bank class
  * 
  * @author Reagan Williams
  * @version 1.7 (project)

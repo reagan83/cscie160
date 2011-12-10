@@ -31,9 +31,24 @@ public class Account
      * @param b Amount needing to be updated
      * @return Newly set balance
      */
-    public Float setBalance(float b)
+    public Float subtractBalance(float b)
     {
-        balance = b;
+        if (b > balance)
+        {
+            // error
+            System.out.println("Error");
+        }
+        else
+        {
+            balance -= b;
+        }
+
+        return new Float(balance);
+    }
+
+    public float addBalance(float b)
+    {
+        balance += b;
         return new Float(balance);
     }
 
