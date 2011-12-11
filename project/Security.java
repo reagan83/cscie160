@@ -11,13 +11,14 @@ import java.util.HashMap;
  */
 public class Security
 {
-    public static HashMap<AccountInfo> ai;
+    private HashMap ai;
 
     public Security()
     {
-        ai.put(new AccountInfo(1, 1234));
-        ai.put(new AccountInfo(2, 2345));
-        ai.put(new AccountInfo(3, 3456));
+        ai = new HashMap();
+        ai.put(1, new AccountInfo(1, 1234));
+        ai.put(2, new AccountInfo(2, 2345));
+        ai.put(3, new AccountInfo(3, 3456));
     }
 
     public boolean authenticate(AccountInfo aiobj)
