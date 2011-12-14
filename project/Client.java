@@ -1,14 +1,35 @@
 package cscie160.project;
 
+import java.rmi.server.UnicastRemoteObject;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.UnknownHostException;
 
-public class Client
+public class Client extends UnicastRemoteObject implements ATMListener
 {
+    public Client() throws java.rmi.RemoteException
+    {
+        super();
+    }
+
     public static void main(String[] args)
+    {
+        Client c;
+
+        try
+        {
+            c = new Client();
+            c.start();
+        }
+        catch (java.rmi.RemoteException re)
+        {
+            System.out.println("Remote exception : " + re);
+        }
+    }
+
+    public void start() throws java.rmi.RemoteException
     {
         ATM atm = null;
 
@@ -38,9 +59,8 @@ public class Client
         {
             try
             {
-                System.out.println("Performing ATM tests...");
+                atm.registerListener(this);
                 testATM(atm);
-                System.out.println("Success!");
             }
             catch (Exception re)
             {
@@ -48,6 +68,7 @@ public class Client
                 re.printStackTrace();
             }
         }
+        
     }
 
     private static AccountInfo getAccountInfo(int number, int pin)
@@ -55,21 +76,37 @@ public class Client
         return new AccountInfo(number, pin);
     }
 
+    public void processNotification(TransactionNotification tn)
+    {
+        System.out.println("Transaction Notification: " + tn.getNotificationMessage());
+    }
+
     public static void testATM(ATM atm)
     {
         if (atm != null)
         {
             printBalances(atm);
+            System.out.println("");
             performTestOne(atm);
+            System.out.println("");
             performTestTwo(atm);
+            System.out.println("");
             performTestThree(atm);
+            System.out.println("");
             performTestFour(atm);
+            System.out.println("");
             performTestFive(atm);
+            System.out.println("");
             performTestSix(atm);
+            System.out.println("");
             performTestSeven(atm);
+            System.out.println("");
             performTestEight(atm);
+            System.out.println("");
             performTestNine(atm);
+            System.out.println("");
             printBalances(atm);
+            System.out.println("");
         }
     }
 

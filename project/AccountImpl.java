@@ -33,9 +33,17 @@ public class AccountImpl extends UnicastRemoteObject implements Serializable, Ac
      * @param b Amount needing to be updated
      * @return Newly set balance
      */
-    public Float subtractBalance(float b) throws java.rmi.RemoteException
+    public Float subtractBalance(float b) throws java.rmi.RemoteException, ATMException
     {
-        balance -= b;
+        if (b > balance)
+        {
+            throw new ATMException("Insufficient funds!");
+        }
+        else
+        {
+            balance -= b;
+        }
+
         return new Float(balance);
     }
 

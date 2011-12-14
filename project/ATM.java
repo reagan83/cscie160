@@ -11,8 +11,9 @@ import java.rmi.Remote;
  */
 public interface ATM extends java.rmi.Remote
 {
-	public boolean deposit(AccountInfo ai, float amount) throws java.rmi.RemoteException;
-	public boolean withdraw(AccountInfo ai, float amount) throws java.rmi.RemoteException;
-	public boolean transfer(AccountInfo to, AccountInfo from, float amount) throws java.rmi.RemoteException;
-	public Float getBalance(AccountInfo ai) throws java.rmi.RemoteException;
+	public boolean deposit(AccountInfo ai, float amount) throws java.rmi.RemoteException, ATMException;
+	public boolean withdraw(AccountInfo ai, float amount) throws java.rmi.RemoteException, ATMException;
+	public boolean transfer(AccountInfo to, AccountInfo from, float amount) throws java.rmi.RemoteException, ATMException;
+	public Float getBalance(AccountInfo ai) throws java.rmi.RemoteException, ATMException;
+    public void registerListener(ATMListener a) throws java.rmi.RemoteException;
 }

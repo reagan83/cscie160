@@ -14,11 +14,11 @@ import java.rmi.Remote;
  */
 public class BankImpl extends UnicastRemoteObject implements Bank
 {
-    private HashMap a;
+    private HashMap<Integer, AccountImpl> a;
 
     public BankImpl() throws java.rmi.RemoteException
     {
-        a = new HashMap();
+        a = new HashMap<Integer, AccountImpl>();
         Account acc;
 
         a.put(1, new AccountImpl(1));

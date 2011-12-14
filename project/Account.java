@@ -13,7 +13,7 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public interface Account extends java.rmi.Remote
 {
-    public Float subtractBalance(float b) throws java.rmi.RemoteException;
+    public Float subtractBalance(float b) throws java.rmi.RemoteException, ATMException;
     public Float addBalance(float b) throws java.rmi.RemoteException;
     public Float getBalance() throws java.rmi.RemoteException;
     public int getAccountNumber() throws java.rmi.RemoteException;

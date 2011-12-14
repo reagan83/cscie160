@@ -15,30 +15,30 @@ import java.rmi.server.UnicastRemoteObject;
 public class SecurityImpl extends UnicastRemoteObject implements Security
 {
     // account pin object
-    private HashMap ap;
+    private HashMap<Integer, AccountInfo> ap;
 
     // authorization permissions
-    private Vector depositAccess, withdrawAccess, balanceAccess;
+    private Vector<Integer> depositAccess, withdrawAccess, balanceAccess;
 
     public SecurityImpl() throws java.rmi.RemoteException
     {
-        ap = new HashMap();
+        ap = new HashMap<Integer, AccountInfo>();
 
         ap.put(1, new AccountInfo(1, 1234));
         ap.put(2, new AccountInfo(2, 2345));
         ap.put(3, new AccountInfo(3, 3456));
 
-        depositAccess = new Vector();
+        depositAccess = new Vector<Integer>();
         depositAccess.add(1);
         depositAccess.add(2);
         //depositAccess.add(3); // not granted per specs
 
-        withdrawAccess = new Vector();
+        withdrawAccess = new Vector<Integer>();
         withdrawAccess.add(1);
         //withdrawAccess.add(2); // not granted per specs
         withdrawAccess.add(3);
 
-        balanceAccess = new Vector();
+        balanceAccess = new Vector<Integer>();
         balanceAccess.add(1);
         balanceAccess.add(2);
         balanceAccess.add(3);

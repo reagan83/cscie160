@@ -2,6 +2,7 @@ package cscie160.project;
 
 import java.io.Serializable;
 
+
 /**
  * Transaction Notification class
  * 
@@ -12,8 +13,22 @@ import java.io.Serializable;
 
 public class TransactionNotification implements java.io.Serializable
 {
-    public TransactionNotification()
+    private String notificationSource;
+    private String notificationMessage;
+
+    public TransactionNotification(String s, String m)
     {
+        this.notificationSource = s;
+        this.notificationMessage = m;
     }
 
+    public String getNotificationSource()
+    {
+        return this.notificationSource;
+    }
+
+    public String getNotificationMessage()
+    {
+        return this.notificationMessage;
+    }
 }
