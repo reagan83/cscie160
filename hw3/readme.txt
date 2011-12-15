@@ -1,6 +1,6 @@
 Reagan Williams
 Homework #3
-rwilliams@fas.harvard.edu
+rwilliams [ at ] fas.harvard.edu
 10/7/2011
 
 This solution is an enhancement to hw2 which provides a basic Elevator simulation, with Floor and Passenger objects written in Java.  This program is created using a public Elevator class that can be extended by other developers in other super classes (a Building class perhaps?), or used in statistical gathering scenarios which I hope to implement in future exercises.
