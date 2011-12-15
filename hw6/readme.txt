@@ -1,6 +1,6 @@
 Reagan Williams
 Homework #6
-rwilliams@fas.harvard.edu
+rwilliams [ at ] fas.harvard.edu
 12/03/2011
 
 This solution contains a threaded ATM client/server process over an established TCP protocol.
