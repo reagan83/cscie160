@@ -1,6 +1,6 @@
 Reagan Williams
 Homework #5
-rwilliams@fas.harvard.edu
+rwilliams [ at ] fas.harvard.edu
 11/10/2011
 
 This solution implements an ATM client/server model using the Java RMI.  The ATM supports ATMFactory objects along with handling multiple Accounts.
