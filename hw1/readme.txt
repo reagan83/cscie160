@@ -1,6 +1,6 @@
 Reagan Williams
 Homework #1
-rwilliams@fas.harvard.edu
+rwilliams [ at ] fas.harvard.edu
 9/14/2011
 
 This solution is a basic Elevator simulation program written in Java.  This program is created using a public Elevator class that can be extended by other developers in other super classes (a Building class perhaps?), or used in statistical gathering scenarios which I hope to implement in future exercises.
