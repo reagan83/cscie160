@@ -6,7 +6,7 @@ import java.rmi.Remote;
  * ATM interface with RMI support.
  * 
  * @author Reagan Williams
- * @version 1.7 (hw7)
+ * @version 1.7 (project)
  * @since 2011-12-02
  */
 public interface ATM extends java.rmi.Remote

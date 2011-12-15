@@ -1,18 +1,25 @@
 Reagan Williams
-Homework #5
-rwilliams@fas.harvard.edu
-11/10/2011
+Final Project
+rwilliams [ at ] fas.harvard.edu
+12/14/2011
 
-This solution implements an ATM client/server model using the Java RMI.  The ATM supports ATMFactory objects along with handling multiple Accounts.
+This solution is an RMI-based an Bank/ATM simulator.
 
-To execute this solution, use three terminals and execute:
+To execute this solution, use four terminals and execute:
 
-rmiregistry -J-cp -J.
-java -classpath HW5.jar cscie160.hw5.Server
-java -classpath HW5.jar cscie160.hw5.Client
+rmiregistry -J-cp -Jproject.jar
+java -classpath project.jar cscie160.project.BankServer
+java -classpath project.jar cscie160.project.ATMServer
+java -classpath project.jar cscie160.project.Client
 
-The output will show 3 accounts being created with initial balances.  Afterwards, various methods are invoked to add/remove funds and the end-result matches what is expected as described in hw5.  The Client class is exactly as described from the hw5 assignment (with tab fixes)!
+The output will show a series of ATM tests, some of which will fail as expected and others will succeed.  The
+primary focus for these tests demonstrates how the Client performs transactions against a remote ATM object and
+receives remote transaction notifications from that object.  As part of the system design I made use of the ATMException
+class to throw exceptions for insufficient funds, invalid authorization attempts, etc.  I'm unhappy with my
+implementation of the security permissions using 3 separate Vector objects - given more time I might rewrite that portion
+of the Security class to use a single object.  My main takeaway from this project is the new knowledge I have on 
+Java Serialization.
 
-All of the JavaDoc comments contained in the cscie160/hw5/doc/ folder.
+All of the JavaDoc comments contained in the cscie160/project/doc/ folder.
 
 

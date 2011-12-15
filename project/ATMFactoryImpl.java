@@ -6,7 +6,7 @@ import java.rmi.server.UnicastRemoteObject;
  * ATM Factory Implementation that interfaces with ATM Factory
  * 
  * @author Reagan Williams
- * @version 1.7 (hw7)
+ * @version 1.7 (project)
  * @since 2011-12-07
  */
 public class ATMFactoryImpl extends UnicastRemoteObject implements ATMFactory

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * Account interface to create an Account objects and set/update balances.
+ * Account interface to create an Account objects and manage balances.
  * 
  * @author Reagan Williams
  * @version 1.7 (project)

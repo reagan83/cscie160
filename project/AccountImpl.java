@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.rmi.server.UnicastRemoteObject;
 
 /**
- * AccountImpl interface to create an Account objects and set/update balances.
+ * AccountImpl remote class to create an Account objects and manage balances.
  * 
  * @author Reagan Williams
  * @version 1.7 (project)
@@ -28,10 +28,12 @@ public class AccountImpl extends UnicastRemoteObject implements Serializable, Ac
     }
 
     /**
-     * Provides interface to set the account balance.  Balances can be negative.
+     * Method to subtract from the account balance; will throw exception for insufficient funds.
      *
      * @param b Amount needing to be updated
-     * @return Newly set balance
+     * @return new balance
+     * @throws java.rmi.RemoteException
+     * @throws ATMException
      */
     public Float subtractBalance(float b) throws java.rmi.RemoteException, ATMException
     {
@@ -47,6 +49,14 @@ public class AccountImpl extends UnicastRemoteObject implements Serializable, Ac
         return new Float(balance);
     }
 
+    /**
+     * Method to add to the account balance.
+     *
+     * @param b Amount needing to be updated
+     * @return new balance
+     * @throws java.rmi.RemoteException
+     * @throws ATMException
+     */
     public Float addBalance(float b) throws java.rmi.RemoteException
     {
         balance += b;
@@ -57,6 +67,7 @@ public class AccountImpl extends UnicastRemoteObject implements Serializable, Ac
      * Returns the available balance
      *
      * @return Account balance
+     * @throws java.rmi.RemoteException
      */
     public Float getBalance() throws java.rmi.RemoteException
     {
@@ -67,6 +78,7 @@ public class AccountImpl extends UnicastRemoteObject implements Serializable, Ac
      * Returns the account number
      *
      * @return Account number
+     * @throws java.rmi.RemoteException
      */
     public int getAccountNumber() throws java.rmi.RemoteException
     {

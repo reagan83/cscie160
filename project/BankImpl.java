@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import java.rmi.Remote;
 
 /**
- * Bank class
+ * BankImpl class that performs account management
  * 
  * @author Reagan Williams
  * @version 1.7 (project)
@@ -14,8 +14,13 @@ import java.rmi.Remote;
  */
 public class BankImpl extends UnicastRemoteObject implements Bank
 {
+    /** HashMap to store the Account objects */
     private HashMap<Integer, AccountImpl> a;
 
+    /**
+     * BankImpl constructor to setup default accounts with set balances.
+     *
+     */
     public BankImpl() throws java.rmi.RemoteException
     {
         a = new HashMap<Integer, AccountImpl>();
@@ -37,9 +42,15 @@ public class BankImpl extends UnicastRemoteObject implements Bank
         acc.addBalance(500);
     }
 
+    /**
+     * Returns a remote reference (stub?) to an Account object
+     *
+     * @param accountNumber account number
+     * @return Account object for the account number
+     * @throws java.rmi.RemoteException
+     */
     public Account getAccount(int accountNumber) throws java.rmi.RemoteException
     {
-//        System.out.println("Object: " + a.get(accountNumber));
         if (a.size() >= accountNumber)
         {
             return (Account)a.get(accountNumber);
@@ -49,7 +60,11 @@ public class BankImpl extends UnicastRemoteObject implements Bank
         return null;
     }
 
-    // test helper function
+    /**
+     * Helper/Test method to print the account balances.
+     *
+     * @throws java.rmi.RemoteException
+     */
     public void printBalances() throws java.rmi.RemoteException
     {
         Account acc;

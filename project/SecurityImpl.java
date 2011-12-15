@@ -14,12 +14,16 @@ import java.rmi.server.UnicastRemoteObject;
  */
 public class SecurityImpl extends UnicastRemoteObject implements Security
 {
-    // account pin object
+    /** HashMap object to manage Account pins */
     private HashMap<Integer, AccountInfo> ap;
 
-    // authorization permissions
+    /** Vector to manage authorization permissions */
     private Vector<Integer> depositAccess, withdrawAccess, balanceAccess;
 
+    /**
+     * SecurityImpl constructor initializes the Accounts with a set security pin
+     * This also initializes account authorization types. 
+     */
     public SecurityImpl() throws java.rmi.RemoteException
     {
         ap = new HashMap<Integer, AccountInfo>();
@@ -45,6 +49,14 @@ public class SecurityImpl extends UnicastRemoteObject implements Security
         
     }
 
+    /**
+     * This method performs transaction-type authorizations for Accounts
+     *
+     * @param transactionType Type of transaction
+     * @param ai Account Info object
+     * @throws java.rmi.RemoteException
+     * @throws ATMException
+     */
     public void authorizeTransaction(String transactionType, AccountInfo ai) throws java.rmi.RemoteException, ATMException
     {
         boolean auth = false;
@@ -76,6 +88,13 @@ public class SecurityImpl extends UnicastRemoteObject implements Security
         }
     }
 
+    /**
+     * This method performs the authentication for Accounts
+     *
+     * @param ai Account Info object
+     * @throws java.rmi.RemoteException
+     * @throws ATMException
+     */
     public void authenticate(AccountInfo ai) throws java.rmi.RemoteException, ATMException
     {
         AccountInfo tmp = (AccountInfo)ap.get(ai.getAccountNumber());
@@ -86,24 +105,4 @@ public class SecurityImpl extends UnicastRemoteObject implements Security
         }
     }
 
-    public static void main(String[] args)
-    {
-        try
-        {
-            Security s = new SecurityImpl();
-
-            AccountInfo ainfo = new AccountInfo(2, 2345);
-//        System.out.println("Authorized Balance: " + s.authorizeTransaction("BALANCE", new AccountInfo2));
-//        System.out.println("Authorized Balance: " + s.authorizeTransaction("BALANCE", 3));
-        }
-        catch (RemoteException re)
-        {
-            System.out.println("Remote exception: " + re);
-        }
-        catch (Exception e)
-        {
-            System.out.println("Exception " + e);
-        }
-
-    }
 }

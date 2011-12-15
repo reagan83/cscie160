@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ATM RMI ready class that interfaces with ATM
+ * ATMImpl RMI ready class that interfaces with ATM
  *
  * @author Reagan Williams
  * @version 1.7 (project)
@@ -21,10 +21,14 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
     private Security security;
     private Bank bank;
 
+    /** Maintain list of ATM listener objects */
     private List<ATMListener> listeners;
 
     /**
-     * ATM Impl constructor that creates 3 account objects with varying initial balances.
+     * ATMImpl constructor that sets default ATM balance of $500.00.
+     * Initiates the ATM listeners ArrayList.
+     * Connects to the remote Security and Bank instances.
+     *
      */
     public ATMImpl() throws java.rmi.RemoteException
     {
@@ -43,11 +47,21 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
         }
     }
 
+    /**
+     * Registers an ATMListener
+     *
+     * @param a ATM listener object
+     */
     public void registerListener(ATMListener a)
     {
         listeners.add(a);
     }
 
+    /**
+     * Iterates through atm listeners and sends notifications.
+     *
+     * @param notification Transaction notification message
+     */
     private void notifyListeners(String notification)
     {
         try
@@ -66,8 +80,11 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
     /**
      * Deposits amount into account
      *
-     * @param accountNumber Account number
+     * @param ai AccountInfo object
      * @param amount Amount to deposit
+     * @return true, unless an exception occurred
+     * @throws java.rmi.RemoteException
+     * @throws ATMException
      */
     public boolean deposit(AccountInfo ai, float amount) throws java.rmi.RemoteException, ATMException
     {
@@ -88,8 +105,11 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
     /**
      * Withdraw amount from account
      *
-     * @param accountNumber Account number
+     * @param ai AccountInfo object
      * @param amount Amount to withdraw
+     * @return true, unless an exception occurred
+     * @throws java.rmi.RemoteException
+     * @throws ATMException
      */
     public boolean withdraw(AccountInfo ai, float amount) throws java.rmi.RemoteException, ATMException
     {
@@ -115,8 +135,12 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
     /**
      * Transfer balance to another account
      *
-     * @param accountNumber Account number
+     * @param from AccountInfo object
+     * @param to AccountInfo object
      * @param amount Amount to withdraw
+     * @return false if withdraw fails, otherwise true unless an exception occurs
+     * @throws java.rmi.RemoteException
+     * @throws ATMException
      */
     public boolean transfer(AccountInfo from, AccountInfo to, float amount) throws java.rmi.RemoteException, ATMException
     {
@@ -143,8 +167,10 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
     /**
      * Return the account balance
      *
-     * @param accountNumber Account number
+     * @param ai AccountInfo object
      * @return Account balance
+     * @throws java.rmi.RemoteException
+     * @throws ATMException
      */
     public Float getBalance(AccountInfo ai) throws java.rmi.RemoteException, ATMException
     {
@@ -155,16 +181,31 @@ public class ATMImpl extends UnicastRemoteObject implements ATM
         return (Float)a.getBalance();
     }
 
+    /**
+     * Helper method to manage the ATM cash balance.
+     *
+     * @param amount amount to add
+     */
     private void addATMCashBalance(float amount)
     {
         this.atmCashBalance = amount;
     }
 
+    /**
+     * Helper method to manage the ATM cash balance.
+     *
+     * @param amount amount to subtract
+     */
     private void subtractATMCashBalance(float amount)
     {
         this.atmCashBalance -= amount;
     }
 
+    /**
+     * Helper method to manage the ATM cash balance.
+     *
+     * @returns ATM cash balance
+     */
     private float getATMCashBalance()
     {
         return atmCashBalance;

@@ -7,8 +7,18 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.UnknownHostException;
 
+/**
+ * Client - ATM Client that tests remote ATM methods
+ * 
+ * @author Reagan Williams
+ * @version 1.7 (project)
+ * @since 2011-12-07
+ */
 public class Client extends UnicastRemoteObject implements ATMListener
 {
+    /**
+     * Client constructor - nothing to see here
+     */
     public Client() throws java.rmi.RemoteException
     {
         super();
@@ -29,6 +39,13 @@ public class Client extends UnicastRemoteObject implements ATMListener
         }
     }
 
+    /**
+     * Non-static method to connect to the remote ATM factory object.
+     * This method also registers itself as listener for transaction notifications.
+     * Finally, this method initializes a series of ATM tests.
+     *
+     * @throws java.rmi.RemoteException
+     */
     public void start() throws java.rmi.RemoteException
     {
         ATM atm = null;
@@ -71,16 +88,34 @@ public class Client extends UnicastRemoteObject implements ATMListener
         
     }
 
-    private static AccountInfo getAccountInfo(int number, int pin)
-    {
-        return new AccountInfo(number, pin);
-    }
 
+    /**
+     * Method for processing/printing transaction notifications.
+     *
+     * @param tn Transaction Notification object
+     */
     public void processNotification(TransactionNotification tn)
     {
         System.out.println("Transaction Notification: " + tn.getNotificationMessage());
     }
 
+    /**
+     * Helper method to support tests 
+     *
+     * @param number Account number
+     * @param pin Account pin
+     * @returns AccountInfo object
+     */
+    private static AccountInfo getAccountInfo(int number, int pin)
+    {
+        return new AccountInfo(number, pin);
+    }
+
+    /**
+     * TestATM method that kicks off the ATM tests.
+     *
+     * @param atm ATM reference
+     */
     public static void testATM(ATM atm)
     {
         if (atm != null)
