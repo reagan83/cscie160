@@ -1,6 +1,6 @@
 Reagan Williams
 Homework #4
-rwilliams@fas.harvard.edu
+rwilliams [ at ] fas.harvard.edu
 10/25/2011
 
 This solution performs simple ATM functions through a client/server process over an established TCP protocol.
